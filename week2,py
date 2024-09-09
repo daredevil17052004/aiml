@@ -1,0 +1,62 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the Iris dataset from seaborn's built-in datasets
+iris = sns.load_dataset('iris')
+
+# Step 1: Explore the Dataset
+print("First few rows of the dataset:")
+print(iris.head())
+
+# Get a summary of the dataset
+print("\nSummary statistics of the dataset:")
+print(iris.describe())
+
+# Check for any missing values
+print("\nChecking for missing values:")
+print(iris.isnull().sum())
+
+# Step 2: Data Cleaning (since Iris dataset is clean, this will be simple)
+# Remove duplicate rows if any
+iris_cleaned = iris.drop_duplicates()
+
+print(f"\nDataset after removing duplicates (if any): {iris_cleaned.shape}")
+
+# Step 3: Data Manipulation
+# Let's group the data by species and get the average for each feature
+grouped = iris_cleaned.groupby('species').mean()
+print("\nAverage feature values per species:")
+print(grouped)
+
+# Step 4: Data Visualization
+# Pairplot of the dataset to see relationships
+sns.pairplot(iris_cleaned, hue='species')
+plt.suptitle('Pairplot of the Iris Dataset', y=1.02)
+plt.show()
+
+# Correlation heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(iris_cleaned.corr(), annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Correlation Heatmap of Iris Dataset')
+plt.show()
+
+# Boxplot for feature comparison across species
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='species', y='sepal_length', data=iris_cleaned)
+plt.title('Sepal Length across different Species')
+plt.show()
+
+# Step 5: Summary Report
+summary = """
+### Iris Dataset Analysis Summary:
+
+1. **Species Overview**: The dataset contains three species: Setosa, Versicolor, and Virginica.
+2. **Feature Correlation**: Sepal and petal lengths show high correlation, especially for Virginica and Versicolor species.
+3. **Species Differences**: Setosa species tend to have shorter petal lengths and widths compared to Versicolor and Virginica.
+4. **Visualization Insights**: Through the pairplot, distinct clusters can be seen for Setosa, whereas Versicolor and Virginica show more overlap.
+5. **Further Analysis**: The dataset shows clean, well-separated features, making it ideal for classification tasks.
+"""
+
+print(summary)
